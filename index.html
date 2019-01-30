@@ -1,0 +1,28 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Note</title>
+<link rel="icon" href="/n.png" />
+<link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="/lib/app.css" />
+
+<main :class="display">
+  <div id="menu">
+    <h1>note></h1>
+    <hr>
+    <label>Repo<div class="input-select"><input v-model="repo"><div>></div><select v-model="repo"><option></option><option :value="r.full_name" v-for="r in repos">{{ r.full_name }}</option></select></div></label>
+    <!-- <label v-if="branches.length > 2">Branch ({{ branches.length - 1 }})<select v-model="branch"><option v-for="b in branches.filter(b => b !== 'HEAD')">{{ b }}</option></select></label>
+    <label>History ({{ logs.length }})<select><option v-for="l in logs">{{ l.oid.slice(0, 7) }}</option></select></label> -->
+    <label>Token<input type="password" v-model="token"></label>
+    <label>Preview<div><button :class="!act('prev').active && !act('both').active && 'active'" @click="del('prev');del('both')">N</button><button :class="act('prev')" @click="add('prev');del('both')">P</button><button :class="act('both')" @click="add('both');del('prev')">B</button></div></label>
+    <label>Line<div><button :class="act('line')" @click="tog('line')">L</button><button :class="{ active: !display.includes('nowrap') }" @click="tog('nowrap')">W</button></div></label>
+    <hr>
+    <tree class="files" :value="tree" :key="repo" @click="file = files.includes($event) ? $event : file"></tree>
+  </div>
+  <div class="menu" @click="tog('tree')" v-text="'>'"></div>
+  <div class="fix" @click="text = pretty" v-if="text !== pretty && !pretty.message" v-text="'f'" tt="Fix syntax"></div>
+  <codemirror v-model="text" :options="{ mode: text[0] === '#' ? 'markdown' : 'html', lineNumbers: display.includes('line'), lineWrapping: !display.includes('nowrap') }"></codemirror>
+  <iframe :srcdoc="preview" v-if="display.includes('prev') || display.includes('both')"></iframe>
+</main>
+
+<script>navigator.serviceWorker.register("/sw.js")</script>
+<script type="module" src="/lib/app.js"></script>

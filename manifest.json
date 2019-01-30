@@ -1,0 +1,15 @@
+{
+  "name": "note>",
+  "short_name": "note>",
+  "start_url": "/",
+  "display": "fullscreen",
+  "theme_color": "#222",
+  "background_color": "#FD4",
+  "icons": [
+    {
+      "src": "n.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}
